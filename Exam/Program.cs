@@ -1,3 +1,8 @@
+using Exam.Contexts;
+using Exam.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace Exam
 {
     public class Program
@@ -8,6 +13,14 @@ namespace Exam
 
            
             builder.Services.AddControllersWithViews();
+            var connectionString = builder.Configuration.GetConnectionString("Default");
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+            {
+            }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
 
             var app = builder.Build();
 
